@@ -1,0 +1,289 @@
+//Marela Dafne Mendoza Sueros CCOMP 1-2
+
+#include <iostream>
+#include <stdlib.h>
+#include <cmath>
+
+using namespace std;
+
+void introducir (char matriz[3][3]){ //Primero creamos la funcion que nos ayudara a crear la matriz 3x3, esta funcion no la imprime, solo la crea//
+    int i, j;
+    char aux;
+
+    aux = '1';
+
+    for(i= 0; i<3; i++){
+        for(j = 0; j < 3; j++){
+            matriz[i][j] = aux++; 
+        }
+    }
+}
+
+void usuario( char matriz[3][3]){ //aquí podemos poner las distinatas opciones del usuario, tanto x como o,ademas las pone depende al caso con el switch 
+    char ficha;
+    char aux;
+    int i, j, k;
+    cout<<"Escoge que ficha quieres ser: ";
+    cin>>ficha;
+
+    if(ficha != 'X' && ficha != 'x' && ficha != 'O' && ficha != 'o'){
+        printf("Pon un valor correcto");
+    }
+    do{
+        do{
+           cout<<"Donde pones la ficha? "; cin>>aux;
+        } while (aux <'1' || aux > '9'); // Aquí le damos un rango de valores, los mismos numeros de la tabla 1-9
+
+        k = 0;
+
+        switch(aux){ //con esta funcion nosotros podemos poner cualquier valor que nos ea el que nos pide y nos rechazará
+            case '0':{
+                if(aux != '1' && aux != '2' && aux != '3' && aux != '4' && aux != '5' && aux != '6' && aux != '7'&& aux != '8' && aux != '9' ){cout<<"Coloque una posicion valida";
+                }                
+                break;
+            }
+            case '1':{ // basicamente toma las coordenadas y si esta repetida ya sea por el usuario o el bot, simplemente te pide intentarlo de otra manera, asi con los 9 casos.
+                i=0;
+                j=0;
+                if(matriz[1][j] == 'X' || matriz[i][j] == 'O'){
+                    k = 1;
+                    printf("La casilla esta ocupada\n\n");
+                }
+                break;
+            }
+
+            case '2':{
+                i=0;
+                j=1;
+                if(matriz[1][j] == 'X' || matriz[i][j] == 'O'){
+                    k = 1;
+                    printf("La casilla esta ocupada\n\n");
+                }
+                break;
+            }
+            case '3':{
+                i=0;
+                j=2;
+                if(matriz[1][j] == 'X' || matriz[i][j] == 'O'){
+                    k = 1;
+                    printf("La casilla esta ocupada\n\n");
+                }
+                break;
+            }
+            case '4':{
+                i=1;
+                j=0;
+                if(matriz[1][j] == 'X' || matriz[i][j] == 'O'){
+                    k = 1;
+                    printf("La casilla esta ocupada\n\n");
+                }
+                break;
+            }
+            case '5':{
+                i=1;
+                j=1;
+                if(matriz[1][j] == 'X' || matriz[i][j] == 'O'){
+                    k = 1;
+                    printf("La casilla esta ocupada\n\n");
+                }
+                break;
+            }
+            case '6':{
+                i=1;
+                j=2;
+                if(matriz[1][j] == 'X' || matriz[i][j] == 'O'){
+                    k = 1;
+                    printf("La casilla esta ocupada\n\n");
+                }
+                break;
+            }
+            case '7':{
+                i=2;
+                j=0;
+                if(matriz[1][j] == 'X' || matriz[i][j] == 'O'){
+                    k = 1;
+                    printf("La casilla esta ocupada\n\n");
+                }
+                break;
+            }
+            case '8':{
+                i=2;
+                j=1;
+                if(matriz[1][j] == 'X' || matriz[i][j] == 'O'){
+                    k = 1;
+                    printf("La casilla esta ocupada\n\n");
+                }
+                break;
+            }
+            case '9':{
+                i=2;
+                j=2;
+                if(matriz[1][j] == 'X' || matriz[i][j] == 'O'){
+                    k = 1;
+                    printf("La casilla esta ocupada\n\n");
+                }
+                break;
+            }
+            
+        }
+
+    }while(k==1); // La variable k la ponemos para delimitar el switch, ya que necesitamos comparar los valores que le pusieron los usuarios y la maquina.
+
+    matriz[i][j] = ficha; // aqui decimos que el valor del usuario es el signo que eligió
+}
+
+void maquina(char matriz[3][3]){ // aqui es donde usamos el cmath para los numeros ranroms, tuve que poner i e j debido a que usaba coordenadas y me salia error sino ponia esas variables.
+    int i,j,k;
+
+    srand (time(NULL));
+
+    cout<<"Turno del bot.\n\n";
+    do{
+        i = rand()% 3;
+        j = rand()% 3;
+
+        if (matriz[i][j] == 'X'||  matriz[i][j] == 'O'||matriz[i][j] == 'x'||  matriz[i][j] == 'o'){
+            k = 1;
+        }
+    }while(k == 1);
+    matriz[i][j] = 'O'; // aqui delimitamos que el bot será O, para evitar confusiones puse cual es el turno del jugador y el turno de la maquina respectivamente. 
+}
+void tablero (char matriz[3][3]){ // con esta funcion estamos imprimiendo lo que la funcion introducir hizo, la matriz. Solo que aqui la arreglamos con guiones y lineas.
+    int i, j;
+
+    for(i = 0; i < 3; i++){
+        for(j = 0; j < 3; j++){
+            if(j < 2){
+                printf(" %c |", matriz[i][j]);
+            }
+            else {
+                printf(" %c ", matriz[i][j]);
+            }
+        }
+        if(i<2){
+            printf("\n-----------\n");
+        }
+    }
+    printf("\n\n");
+}
+int verificar(char matriz[3][3]){ // la funcion verificar es para poner los posibles casos en la que la maquina y el jugador se enfrenten.
+    if(matriz[0][0]== 'X'||matriz[0][0]== 'O'||matriz[0][0]== 'x'||matriz[0][0]== 'o'){ // aqui lo hacemos desde el 1.
+        if(matriz[0][0]== matriz[0][1] && matriz[0][0]== matriz[0][2]){ // aqui solo comparamos los valores de lado horizontal
+            if(matriz[0][0]== 'X'|| matriz[0][0]== 'x'){
+                return 0; // el 0 equivale a ganar para el usuario
+            }
+            else{
+                return 1; // el 1 equivale perder para el usuario
+            }
+        }
+        if(matriz[0][0]== matriz[1][0] && matriz[0][0]== matriz[2][0]){ // aqui es de lado vertical 1 4 7
+            if(matriz[0][0]== 'X'|| matriz[0][0]== 'x'){
+                return 0; 
+            }
+            else{
+                return 1; 
+         }
+    }
+}
+
+if ((matriz[0][0]== 'X'|| matriz[0][0]== 'x'|| matriz[0][0]== 'O'|| matriz[0][0]== 'o')){
+    if(matriz[1][1] == matriz[0][0] && matriz[1][1] == matriz[2][2]){  // aqui hablamos del centro, osea el 5, por lo que tenemos que comparar todos sus alrededores.
+        if(matriz[1][1]== 'X'|| matriz[1][1]== 'x'){
+                return 0;
+            }
+            else{
+                return 1; 
+         }
+         if(matriz[1][1] == matriz [1][0] && matriz[1][1] == matriz[1][2]){ // aqui comparamos el lado 4-5-6
+             if(matriz[1][1]== 'X'|| matriz[1][1]== 'x'){
+                return 0;
+             }
+             else{
+                return 1; 
+            }
+        if(matriz[1][1] == matriz [2][0] && matriz[1][1] == matriz[0][2]){ // aqui comparamos el lado 7-5-3
+             if(matriz[1][1]== 'X'|| matriz[1][1]== 'x'){
+                return 0;
+             }
+             else{
+                return 1;}
+        if(matriz[1][1] == matriz [0][1] && matriz[1][1] == matriz[2][1]){ // y por ultimo comparamos el lado 2-5-8
+             if(matriz[1][1]== 'X'|| matriz[1][1]== 'x'){
+                return 0;
+             }
+             else{
+                return 1; 
+
+         }
+      }
+    }
+  }
+ }
+ if (matriz[2][2] == 'X' || matriz[2][2] == 'O' || matriz[2][2] == 'x' || matriz[2][2] == 'o'){
+     if(matriz[2][2] == matriz[2][0] && matriz[2][2]== matriz[2][1]){ // aqui comparamos al 7-8-9
+         if(matriz[2][2]== 'X'|| matriz[2][2]== 'x'){
+                return 0;
+             }
+             else{
+                return 1;      
+     }
+ } 
+ if(matriz[2][2] == matriz[0][2] && matriz[2][2]== matriz[1][2]){ //aqui comparamos 3-6-9
+         if(matriz[2][2]== 'X'|| matriz[2][2]== 'x'){
+                return 0;
+             }
+             else{
+                return 1;      
+       }
+    } 
+  }
+ return 2; //este 2 nos va a servir para saber cuando empatamos con la maquina
+}
+}
+
+void loop(char matriz[3][3]){
+    int i, j; // vamos a crear i y j para poder medir los turnos, debido a que la maquina podria exceder 
+
+    i = 0; //inciamos i en 0
+
+    introducir(matriz);
+    tablero(matriz); //usamos las dos funciones para la matriz 3x3
+
+    do{
+        system("cls");
+        if(i % 2 == 0){ // aqui decimos que cuando dividamos a i y nos salga 0 va a ser el turno del usuario
+            usuario (matriz);
+        }
+        else{
+            maquina(matriz); //aqui decimos que si el valor es diferente a ese pues es turno de la maquina
+        }
+        j = verificar (matriz); // aqui usamos a j para la funcion verificar
+        tablero(matriz);
+        i++;// tenemos que poner que i va a aumentar cada vez que se cumpla
+    }while(i<=9 && j == 2);
+    if(j==0){ // j es nuestras variables de retunr y los comparamos, 0 es usuario ganador, 1 es maquina ganadora y 2 es un empate
+        printf("Haz ganado.\n\n");
+    }
+    else if ( j==1){
+        printf("Haz perdido\n\n");
+    }
+    else{
+        printf("Haz empatado con el bot\n\n");
+    }
+}
+
+
+
+int main(){ // fianlmente invocamos las funciones y jugamos :)
+  char matriz[3][3];
+  void loop(char matriz[3][3]);
+  void introducir (char matriz[3][3]);
+  void tablero ( char matriz[3][3]);
+  void usuario( char matriz[3][3]);
+  void maquina(char matriz[3][3]);
+  int verificar(char matriz[3][3]);
+
+  loop(matriz);
+
+  return 0;
+}
